@@ -1,0 +1,36 @@
+{
+    "name": "flyerless/flyerless-subscription-management",
+    "description": "A module to allow users to control which societies they are subscribed to and to manage their mailing lists",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tristan Warren",
+            "email": "tristan@flyerless.co.uk"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "bristol-su/support": "^4.0",
+        "flyerless/flyerless-service": "^0.1.2"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flyerless\\FlyerlessSubscriptionManagement\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Flyerless\\Tests\\FlyerlessSubscriptionManagement\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Flyerless\\FlyerlessSubscriptionManagement\\ModuleServiceProvider"
+            ]
+        }
+    }
+}

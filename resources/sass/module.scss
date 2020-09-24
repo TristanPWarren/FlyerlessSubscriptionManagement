@@ -1,0 +1,27 @@
+#p-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+}
+
+#p-title {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+#p-description {
+  font-size: 15px;
+}
+
+#flyerless-subscription-management-root {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
