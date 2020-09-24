@@ -23,7 +23,7 @@ class ModuleServiceProvider extends ServiceProvider
 
 
 
-        //API
+        //API - User
         'user-society.index' => [
             'name' => 'View Subscribed Societies',
             'description' => 'Allows users to view currently subscribed societies',
@@ -33,6 +33,14 @@ class ModuleServiceProvider extends ServiceProvider
             'name' => 'Modify Subscription Preferences',
             'description' => 'Modify the subscription preferences of a user',
             'admin' => false,
+        ],
+
+
+        //API - Admin
+        'download-members.download' => [
+            'name' => 'Download a list of members and their emails',
+            'description' => 'Allows an admin to download a list of their societies members',
+            'admin' => true,
         ],
     ];
 

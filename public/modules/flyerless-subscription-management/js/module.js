@@ -123,9 +123,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SubscriptionManagementForm",
   props: {
@@ -140,69 +137,36 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   data: function data() {
-    return {
-      userName: '',
-      listOfSocieties: []
-    };
+    return {};
   },
-  mounted: function mounted() {
-    this.loadSocieties();
-  },
+  mounted: function mounted() {},
   methods: {
-    loadSocieties: function loadSocieties() {
+    getMemberDetails: function getMemberDetails() {
       var _this = this;
 
-      this.listOfSocieties = [];
-      this.$http.get('user_societies').then(function (response) {
-        _this.userName = response.data.user_name;
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+      this.$http.get('member_details').then(function (response) {
+        var csvContent = "data:text/csv;charset=utf-8,";
+        response.data.forEach(function (rowArray) {
+          var row = rowArray.join(",");
+          csvContent += row + "\r\n";
+        });
+        var d = new Date();
+        var dd = String(d.getDate()).padStart(2, '0');
+        var mm = String(d.getMonth() + 1).padStart(2, '0'); //January is 0!
 
-        try {
-          for (var _iterator = response.data.societies[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var society = _step.value;
+        var yyyy = d.getFullYear();
+        var today = mm + '_' + dd + '_' + yyyy;
+        var encodedUri = encodeURI(csvContent);
+        var link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "members_".concat(today, ".csv"));
+        document.body.appendChild(link); // Required for FF
 
-            if (society.interest === true) {
-              _this.listOfSocieties.push(society);
-            }
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-              _iterator["return"]();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
+        link.click();
       })["catch"](function (error) {
-        return _this.$notify.alert('Sorry, something went wrong retrieving list of societies: ' + error.message);
+        return _this.$notify.alert('Sorry, something went wrong retrieving membership details: ' + error.message);
       });
-    },
-    submit: function submit() {
-      var _this2 = this;
-
-      var formData = new FormData();
-      formData.append('societies', JSON.stringify(this.listOfSocieties));
-      this.$http.post('user_societies', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(function (response) {
-        _this2.$notify.success('Society preferences updated!');
-
-        _this2.loadSocieties();
-      })["catch"](function (error) {
-        return _this2.$notify.alert('There was a problem updating your preferences: ' + error.message);
-      });
-    },
-    reset: function reset() {}
+    }
   },
   computed: {}
 });
@@ -33607,7 +33571,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n#instruction-message[data-v-cbfcc1a0] {\n    margin-top: 20px;\n    margin-bottom: 15px;\n    text-align: center;\n}\n#column-headers[data-v-cbfcc1a0] {\n    display: flex;\n    width: 80%;\n    justify-content: space-between;\n}\n#button-group-titles[data-v-cbfcc1a0] {\n    display: flex;\n    width: 120px;\n    justify-content: space-between;\n}\n#line-break[data-v-cbfcc1a0] {\n    height: 2px;\n    background-color: #c7c7c7;\n    width: 90%;\n    margin-bottom: 10px;\n}\n#society-main-container[data-v-cbfcc1a0] {\n    display: flex;\n    flex-direction: column;\n    align-items : center;\n    width: 80%;\n    margin-bottom: 25px;\n}\n.society-line[data-v-cbfcc1a0] {\n    display: flex;\n    width: 80%;\n    justify-content: space-between;\n}\n.society-name[data-v-cbfcc1a0] {\n    width: calc(100% - 130px);\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n}\n.button-group[data-v-cbfcc1a0] {\n    width: 100px;\n    display: flex;\n    justify-content: space-between;\n}\n#no-societies-message[data-v-cbfcc1a0] {\n    text-align: center;\n    height: 20px;\n    width: 100%;\n    margin-bottom: 50px;\n}\n\n", ""]);
+exports.push([module.i, "\n#admin-main-container[data-v-cbfcc1a0] {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n}\n#download-button[data-v-cbfcc1a0] {\n    margin-top: 40px;\n}\n\n\n", ""]);
 
 // exports
 
@@ -39916,28 +39880,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      {
-        attrs: { id: "instruction-message" },
-        model: {
-          value: _vm.userName,
-          callback: function($$v) {
-            _vm.userName = $$v
-          },
-          expression: "userName"
-        }
-      },
-      [
-        _vm._v(
-          "\n        Hi " +
-            _vm._s(_vm.userName) +
-            ", You can download all of the emails from the members of your society from here.\n    "
-        )
-      ]
-    ),
-    _vm._v(" "),
+  return _c("div", { attrs: { id: "admin-main-container" } }, [
     _vm.canDownload
       ? _c(
           "div",
@@ -39945,20 +39888,17 @@ var render = function() {
             _c(
               "b-button",
               {
-                attrs: {
-                  type: "submit",
-                  variant: "primary",
-                  disabled: this.listOfSocieties.length === 0
-                }
+                attrs: { id: "download-button", variant: "primary" },
+                on: { click: _vm.getMemberDetails }
               },
-              [_vm._v("Update")]
+              [_vm._v(" Download ")]
             )
           ],
           1
         )
       : _c("div", [
           _c("div", { attrs: { id: "authentication-warning" } }, [
-            _vm._v(" Use as an authorised user to modify club details ")
+            _vm._v(" Use as an authorised user to download members details ")
           ])
         ])
   ])

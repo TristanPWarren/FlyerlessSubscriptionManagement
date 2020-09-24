@@ -9,7 +9,7 @@
     </div>
 
     <subscription-download
-        :can-download="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('flyerless-subscription-management.user-society.update')?'true':'false')}}"
+        :can-download="{{(\BristolSU\Support\Permissions\Facade\PermissionTester::evaluate('flyerless-subscription-management.download-members.download')?'true':'false')}}"
         query-string="{{url()->getAuthQueryString()}}"
     >
 

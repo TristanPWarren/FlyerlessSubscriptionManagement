@@ -10,3 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+use Illuminate\Support\Facades\Route;
+
+Route::namespace('AdminApi')->group(function() {
+    Route::apiResource('member_details', 'MemberDetailsController')->only(['index']);
+});
