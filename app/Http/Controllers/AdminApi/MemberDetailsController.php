@@ -36,14 +36,6 @@ class MemberDetailsController extends Controller
 
 
 
-        $date = Carbon::now()->toDateString();
-        $headers = [
-            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Content-type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=members_' . $date . '.csv',
-            'Expires' => '0',
-            'Pragma' => 'public',
-        ];
 
         $dataResponse = $response['Students'];
         $data = array();
@@ -57,7 +49,15 @@ class MemberDetailsController extends Controller
 
         return $data;
 
-
+//        $date = Carbon::now()->toDateString();
+//        $headers = [
+//            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+//            'Content-type' => 'text/csv',
+//            'Content-Disposition' => 'attachment; filename=members_' . $date . '.csv',
+//            'Expires' => '0',
+//            'Pragma' => 'public',
+//        ];
+//
 //        $callback = function() use ($data) {
 //            $file = fopen('php://output', 'w');
 //

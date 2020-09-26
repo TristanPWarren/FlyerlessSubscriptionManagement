@@ -18,6 +18,10 @@ class UserSocieties extends Model {
 
     protected $table = 'flyerless_subscription_management_user_society';
 
+    protected $casts = [
+        'societies' => 'array',
+    ];
+
     protected $fillable = [
         'user_id',
         'user_name',

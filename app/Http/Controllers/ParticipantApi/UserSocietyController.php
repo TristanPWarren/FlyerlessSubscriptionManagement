@@ -57,7 +57,6 @@ class UserSocietyController extends Controller
         }
 
         $userSocieties = UserSocieties::forResource()->first();
-        $userSocieties->societies = json_decode((string) $userSocieties->societies, false);
 
         return $userSocieties;
     }
@@ -84,10 +83,9 @@ class UserSocietyController extends Controller
         $userSocieties->save();
 
 
-        //TODO: MAKE A JOB
-
+        //Update Flyerless
         $userSocieties = UserSocieties::forResource()->first();
-        $oldPreferences = json_decode((string) $userSocieties->societies, false);
+        $oldPreferences = $userSocieties->societies;
         $connector = app(ModuleInstanceServiceRepository::class)->getConnectorForService('flyerless', $moduleInstance->id);
 
         $user = $userRepository->getById($authentication->getUser()->id());
@@ -96,11 +94,13 @@ class UserSocietyController extends Controller
         $userName = explode('@', $userEmail)[0];
 
         $newPreferences = array();
+
         foreach ($oldPreferences as $oldPreference) {
             $newPreference = $oldPreference;
+//            dd($oldPreference);
 
             //Remove email from flyerless
-            if ($oldPreference->email === false) {
+            if ($oldPreference['email'] === false) {
                 $body = [
                     'Request_Type' => 2,
                     'subType' => 2,
@@ -114,12 +114,12 @@ class UserSocietyController extends Controller
             }
 
             //Remove interest from flyerless
-            if ($oldPreference->interest === false) {
+            if ($oldPreference['interest'] === false) {
                 $body = [
                     'Request_Type' => 2,
                     'subType' => 1,
                     'studentUsername' => $userName,
-                    'societyID' => $oldPreference->clubID,
+                    'societyID' => $oldPreference['clubID'],
                 ];
                 $response = $connector->request('POST', '', $body);
                 if (json_decode((string) $response->getBody()->getContents(), false)->Message === "Success") {
