@@ -91,25 +91,25 @@ class UserSocietyController extends Controller
         $user = $userRepository->getById($authentication->getUser()->id());
         $userData = $user->data();
         $userEmail = $userData->email();
-        $userName = explode('@', $userEmail)[0];
+//        $userName = explode('@', $userEmail)[0];
 
         $newPreferences = array();
 
+
         foreach ($oldPreferences as $oldPreference) {
             $newPreference = $oldPreference;
-//            dd($oldPreference);
 
             //Remove email from flyerless
             if ($oldPreference['email'] === false) {
                 $body = [
                     'Request_Type' => 2,
                     'subType' => 2,
-                    'studentUsername' => $userName,
-                    'societyID' => $oldPreference->clubID,
+                    'studentEmail' => $userEmail,
+                    'societyID' => $oldPreference['clubID'],
                 ];
                 $response = $connector->request('POST', '', $body);
                 if (json_decode((string) $response->getBody()->getContents(), false)->Message === "Success") {
-                    $newPreference->email = 0;
+                    $newPreference['email'] = 0;
                 }
             }
 
@@ -118,7 +118,7 @@ class UserSocietyController extends Controller
                 $body = [
                     'Request_Type' => 2,
                     'subType' => 1,
-                    'studentUsername' => $userName,
+                    'studentEmail' => $userEmail,
                     'societyID' => $oldPreference['clubID'],
                 ];
                 $response = $connector->request('POST', '', $body);
@@ -157,11 +157,11 @@ class UserSocietyController extends Controller
         $user = $userRepository->getById($authentication->getUser()->id());
         $userData = $user->data();
         $userEmail = $userData->email();
-        $userName = explode('@', $userEmail)[0];
+//        $userName = explode('@', $userEmail)[0];
 
         $body = [
             'Request_Type' => 1,
-            'studentUsername' => $userName,
+            'studentEmail' => $userEmail,
         ];
 
         $response = $connector->request('POST', '', $body);
